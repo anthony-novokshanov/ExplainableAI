@@ -1,42 +1,33 @@
-# 🩺 Explainable AI for Pneumonia Detection
+# Explainable AI for Pneumonia Detection
 
-This project explores the use of **Explainable Artificial Intelligence (XAI)** in medical imaging.  
-We developed a **Convolutional Neural Network (CNN)** trained on the [PneumoniaMNIST dataset](https://medmnist.com/) and integrated a custom explainability algorithm inspired by **LIME** to detect pneumonia in chest X-ray scans.  
+A CNN that classifies chest X-rays as normal or pneumonia, paired with a LIME-inspired perturbation method that shows which pixels drove each prediction. The goal is a model whose outputs a clinician can check rather than take on faith.
 
-Unlike traditional “black-box” AI, this model highlights the **specific pixels that most influenced predictions**, allowing doctors to better understand and trust the system’s outputs.  
+Paper: [Research Archive preprint](https://research-archive.org/index.php/rars/preprint/view/1724/2453)
 
----
+## How it works
 
-## 🚀 Features
-- **CNN Model** built in **PyTorch** with ~90% accuracy on 28×28 chest X-rays.  
-- **XAI Module** that identifies and overlays the most important pixels for each prediction.  
-- **Visualization Tools** for medical professionals to see where pneumonia is most likely located.  
-- **Model-Agnostic Approach** – explainability method can be applied to other ML models.  
-- **Proof-of-Concept Tool** for integrating AI into healthcare with transparency and trust.  
+1. **Classifier**: a CNN built in PyTorch and trained on [PneumoniaMNIST](https://medmnist.com/) (5,856 grayscale chest X-rays, 28×28).
+2. **Explanation**: pixels are perturbed and the change in the model's output is measured. Pixels that shift the prediction most are ranked as most important.
+3. **Visualization**: importance scores are rendered as a heatmap and overlaid on the original X-ray.
 
----
+The explanation method only needs the model's predictions, so it can be used with other classifiers too.
 
-## 🛠️ Tech Stack
-- **Python** (Google Colab environment, PyTorch 2.1, CUDA 11.8)
-- **Deep Learning**: Convolutional Neural Networks (CNNs)  
-- **Dataset**: PneumoniaMNIST (5,856 grayscale X-rays)  
-- **XAI**: Custom pixel-perturbation method (inspired by LIME)  
+## Results
 
----
+- ~90% test accuracy after 15 epochs.
+- Heatmaps highlight the lung regions associated with pneumonia.
+- Misclassified scans tend to show unusual importance patterns, which makes errors easier to spot.
 
-## 📊 Results
-- **Accuracy**: ~90% after 15 epochs  
-- **Explainability**: Visual heatmaps highlight pneumonia regions in lungs  
-- **Interpretability**: Identifies false predictions by analyzing unusual pixel activation patterns  
+## Example
 
----
+| Original X-ray | Pixel importance | Overlay |
+|---|---|---|
+| ![Original X-ray](images/originalchest.png) | ![Heatmap](images/heatmap.png) | ![Overlay](images/overlayed.png) |
 
-## 📸 Example Outputs
-![Original X-ray](https://github.com/AntNeedsHelp/ExplainableAI/blob/main/images/originalchest.png)
-![Heatmap of Important Pixels](https://github.com/AntNeedsHelp/ExplainableAI/blob/main/images/heatmap.png)
-![Overlayed Pixels](https://github.com/AntNeedsHelp/ExplainableAI/blob/main/images/overlayed.png)
+## Running it
 
----
+1. Open the notebook in Google Colab.
+2. Set the runtime to **T4 GPU** (Runtime → Change runtime type).
+3. Run all cells.
 
-## 📥 Usage
-Simply open the linked GoogleCollab notebook and run it using the **T4 GPU** runtime
+Built with Python, PyTorch 2.1 and CUDA 11.8.
